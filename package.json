@@ -1,6 +1,6 @@
 {
   "name": "party-calc",
-  "homepage": "https://wrmacrae.github.io/party-calc/",
+  "homepage": "http://wrmacrae.github.io/party-calc/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
