@@ -1,3 +1,5 @@
+Calculator for Magic: The Gathering's party mechanic in Zendicar Rising, available here: https://wrmacrae.github.io/party-calc
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
