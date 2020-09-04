@@ -1,0 +1,29 @@
+.form {
+}
+
+.legend {
+  display: inline;
+}
+
+.legendEntry {
+  display: inline;
+  margin: 1em;
+}
+
+.numbox {
+  margin-right: 10px;
+}
+
+.tooltip {
+    border: 2px solid;
+    border-radius: 4px;
+    padding: 3px;
+    background-color: #111;
+    justify-content: center;
+    align-items: center;
+    opacity: 0.9;
+}
+
+.text {
+  color: #fff;
+}

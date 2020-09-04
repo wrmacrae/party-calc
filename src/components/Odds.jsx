@@ -1,5 +1,6 @@
 import React from 'react';
 import { BarChart } from 'react-d3-components';
+import './Odds.css';
 
 function cell(d, dindex) {
   return {x: "" + (dindex+1), y: d};
@@ -63,7 +64,7 @@ function calculate(s, a, b, c, d) {
 }
 
 function tooltip (x, y0, y, total) {
-      return (Math.round(y*10)/10).toString() + "%";
+      return <div className="tooltip">{(Math.round(y*10)/10).toString() + "%"}</div>;
 }
 
 export default class Odds extends React.Component {
@@ -71,7 +72,7 @@ export default class Odds extends React.Component {
     super(props);
     this.state = {
       deck: 40,
-      clerics: 4,
+      clerics: 2,
       rogues: 3,
       warriors: 2,
       wizards: 1
@@ -94,19 +95,48 @@ export default class Odds extends React.Component {
     const partyByDraw = calculate(this.state.deck, this.state.clerics, this.state.rogues, this.state.warriors, this.state.wizards);
     var data = partyByDraw.map(row);
     return <div>
-      <div>
-        <label html-for="deck"> Cards in deck: <input className="numbox" type="number" id="deck" name="deck" min="0" defaultValue="40" onChange={this.handleInputChange} /></label>
-        <label html-for="clerics"> Clerics: <input className="numbox" type="number" id="clerics" name="clerics" min="0" defaultValue="4" onChange={this.handleInputChange} /></label>
-        <label html-for="rogues"> Rogues: <input className="numbox" type="number" id="rogues" name="rogues" min="0" defaultValue="3" onChange={this.handleInputChange} /></label>
-        <label html-for="warriors"> Warriors: <input className="numbox" type="number" id="warriors" name="warriors" min="0" defaultValue="2" onChange={this.handleInputChange} /></label>
-        <label html-for="wizards"> Wizards: <input className="numbox" type="number" id="wizards" name="wizards" min="0" defaultValue="1" onChange={this.handleInputChange} /></label>
+      <div className="form">
+        <label html-for="deck"> Cards in deck: </label><input className="numbox" type="number" id="deck" name="deck" min="0" defaultValue="40" onChange={this.handleInputChange} />
+        <label html-for="clerics"> Clerics: </label><input className="numbox" type="number" id="clerics" name="clerics" min="0" defaultValue="2" onChange={this.handleInputChange} />
+        <label html-for="rogues"> Rogues: </label><input className="numbox" type="number" id="rogues" name="rogues" min="0" defaultValue="3" onChange={this.handleInputChange} />
+        <label html-for="warriors"> Warriors: </label><input className="numbox" type="number" id="warriors" name="warriors" min="0" defaultValue="2" onChange={this.handleInputChange} />
+        <label html-for="wizards"> Wizards: </label><input className="numbox" type="number" id="wizards" name="wizards" min="0" defaultValue="1" onChange={this.handleInputChange} />
       </div>
       <BarChart
               data={data}
               width={1500}
               height={400}
               tooltipHtml={tooltip}
+              tooltipOffset={{top: -50, left: 0}}
+              yAxis={{tickFormat: y => {return ""}}}
               margin={{top: 10, bottom: 50, left: 50, right: 10}}/>
+      <div className="legend">
+        <div className="legendEntry">
+          <svg width="20" height="20">
+            <rect width="20" height="20" style={{fill: "#1f77b4"}} />
+          </svg> = Party of 0
+        </div>
+        <div className="legendEntry">
+          <svg width="20" height="20">
+            <rect width="20" height="20" style={{fill: "#aec7e8"}} />
+          </svg> = Party of 1
+        </div>
+        <div className="legendEntry">
+          <svg width="20" height="20">
+            <rect width="20" height="20" style={{fill: "#ff7f0e"}} />
+          </svg> = Party of 2
+          </div>
+        <div className="legendEntry">
+          <svg width="20" height="20">
+            <rect width="20" height="20" style={{fill: "#ffbb78"}} />
+          </svg> = Party of 3
+          </div>
+        <div className="legendEntry">
+          <svg width="20" height="20">
+            <rect width="20" height="20" style={{fill: "#2ca02c"}} />
+          </svg> = Party of 4
+        </div>
+      </div>
     </div>;
   }
 }
