@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/party-calc/static/css/main.180d1225.chunk.css",
-    "main.js": "/party-calc/static/js/main.dd7ca4d9.chunk.js",
-    "main.js.map": "/party-calc/static/js/main.dd7ca4d9.chunk.js.map",
+    "main.js": "/party-calc/static/js/main.bcad01fb.chunk.js",
+    "main.js.map": "/party-calc/static/js/main.bcad01fb.chunk.js.map",
     "runtime-main.js": "/party-calc/static/js/runtime-main.80518510.js",
     "runtime-main.js.map": "/party-calc/static/js/runtime-main.80518510.js.map",
     "static/js/2.436c79f6.chunk.js": "/party-calc/static/js/2.436c79f6.chunk.js",
     "static/js/2.436c79f6.chunk.js.map": "/party-calc/static/js/2.436c79f6.chunk.js.map",
     "index.html": "/party-calc/index.html",
-    "precache-manifest.c6595a564efb04c88f9aa242270d69e0.js": "/party-calc/precache-manifest.c6595a564efb04c88f9aa242270d69e0.js",
+    "precache-manifest.4e26c822b0552c86dcc33f45d92dd641.js": "/party-calc/precache-manifest.4e26c822b0552c86dcc33f45d92dd641.js",
     "service-worker.js": "/party-calc/service-worker.js",
     "static/css/main.180d1225.chunk.css.map": "/party-calc/static/css/main.180d1225.chunk.css.map",
     "static/js/2.436c79f6.chunk.js.LICENSE.txt": "/party-calc/static/js/2.436c79f6.chunk.js.LICENSE.txt"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.80518510.js",
     "static/js/2.436c79f6.chunk.js",
     "static/css/main.180d1225.chunk.css",
-    "static/js/main.dd7ca4d9.chunk.js"
+    "static/js/main.bcad01fb.chunk.js"
   ]
 }
