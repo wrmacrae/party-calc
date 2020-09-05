@@ -24,7 +24,7 @@ function shuffle(a) {
   return a;
 }
 
-function calculate(s, a, b, c, d, p) {
+function calculate(s, a, b, c, d, p, ha, hb, hc, hd, hp) {
   if (a == null || isNaN(a)) {
     a = 0;
   }
@@ -51,14 +51,37 @@ function calculate(s, a, b, c, d, p) {
   deck.fill("C", a+b, a+b+c);
   deck.fill("D", a+b+c, a+b+c+d);
   deck.fill("P", a+b+c+d, a+b+c+d+p)
+  var needs = []
+  var startingParty = 0
+  if (ha) {
+    startingParty += 1;
+  } else {
+    needs.push("A");
+  }
+  if (hb) {
+    startingParty += 1;
+  } else {
+    needs.push("B");
+  }
+  if (hc) {
+    startingParty += 1;
+  } else {
+    needs.push("C");
+  }
+  if (hd) {
+    startingParty += 1;
+  } else {
+    needs.push("D");
+  }
+  startingParty += hp;
   const trials = 100000;
   for (var t = 0; t < trials; t++) {
     shuffle(deck);
-    var firsts = ["A", "B", "C", "D"].map(v => deck.indexOf(v))
+    var firsts = needs.map(v => deck.indexOf(v))
     firsts.filter(v => v !== -1);
-    var party = 0;
+    var party = startingParty;
     for (var i = 0; i < s; i++) {
-      if (firsts.includes(i) || deck[i] == "P") {
+      if (firsts.includes(i) || deck[i] === "P") {
         party += 1;
         if (party > 4) {
           party = 4;
@@ -83,24 +106,34 @@ export default class Odds extends React.Component {
       rogues: 3,
       warriors: 2,
       wizards: 1,
-      paragons: 0
+      paragons: 0,
+      haveparagons: 0
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick(event) {
+    const target = event.target;
+    const checked = target.checked;
+    const name = target.name;
+    this.setState({
+      [name]: checked
+    });
   }
 
   handleInputChange(event) {
     const target = event.target;
     const value = target.value;
     const name = target.name;
-
     this.setState({
       [name]: parseInt(value)
     });
   }
 
   render() {
-    const partyByDraw = calculate(this.state.deck, this.state.clerics, this.state.rogues, this.state.warriors, this.state.wizards, this.state.paragons);
+    const partyByDraw = calculate(this.state.deck, this.state.clerics, this.state.rogues, this.state.warriors, this.state.wizards, this.state.paragons, this.state.haveclerics, this.state.haverogues, this.state.havewarriors, this.state.havewizards, this.state.haveparagons);
     var data = partyByDraw.map(row);
     return <div>
       <div className="form">
@@ -145,6 +178,14 @@ export default class Odds extends React.Component {
             <rect width="20" height="20" style={{fill: "#2ca02c"}} />
           </svg> = Party of 4
         </div>
+      </div>
+      <div className="form bot">
+        Already Have --
+        <label html-for="haveclerics"> Clerics:</label><input className="checkbox" type="checkbox" id="haveclerics" name="haveclerics" onClick={this.handleClick} />
+        <label html-for="haverogues"> Rogues:</label><input className="checkbox" type="checkbox" id="haverogues" name="haverogues" onClick={this.handleClick} />
+        <label html-for="havewarriors"> Warriors:</label><input className="checkbox" type="checkbox" id="havewarriors" name="havewarriors" onClick={this.handleClick} />
+        <label html-for="havewizards"> Wizards:</label><input className="checkbox" type="checkbox" id="havewizards" name="havewizards" onClick={this.handleClick} />
+        <label html-for="haveparagons"> Paragons: </label><input className="numbox" type="number" id="haveparagons" name="haveparagons" min="0" defaultValue="0" onChange={this.handleInputChange} />
       </div>
     </div>;
   }
