@@ -24,7 +24,7 @@ function shuffle(a) {
   return a;
 }
 
-function calculate(s, a, b, c, d) {
+function calculate(s, a, b, c, d, p) {
   if (a == null || isNaN(a)) {
     a = 0;
   }
@@ -37,8 +37,11 @@ function calculate(s, a, b, c, d) {
   if (d == null || isNaN(d)) {
     d = 0;
   }
-  if (s == null || isNaN(s) || s < a+b+c+d) {
-    s = a+b+c+d;
+  if (p == null || isNaN(p)) {
+    p = 0;
+  }
+  if (s == null || isNaN(s) || s < a+b+c+d+p) {
+    s = a+b+c+d+p;
   }
   let partyByDraw = Array(5).fill(0).map(x => Array(s).fill(0));
   let deck = new Array(s);
@@ -47,6 +50,7 @@ function calculate(s, a, b, c, d) {
   deck.fill("B", a, a+b);
   deck.fill("C", a+b, a+b+c);
   deck.fill("D", a+b+c, a+b+c+d);
+  deck.fill("P", a+b+c+d, a+b+c+d+p)
   const trials = 100000;
   for (var t = 0; t < trials; t++) {
     shuffle(deck);
@@ -54,8 +58,11 @@ function calculate(s, a, b, c, d) {
     firsts.filter(v => v !== -1);
     var party = 0;
     for (var i = 0; i < s; i++) {
-      if (firsts.includes(i)) {
+      if (firsts.includes(i) || deck[i] == "P") {
         party += 1;
+        if (party > 4) {
+          party = 4;
+        }
       }
       partyByDraw[party][i] += 1;
     }
@@ -75,7 +82,8 @@ export default class Odds extends React.Component {
       clerics: 2,
       rogues: 3,
       warriors: 2,
-      wizards: 1
+      wizards: 1,
+      paragons: 0
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -92,7 +100,7 @@ export default class Odds extends React.Component {
   }
 
   render() {
-    const partyByDraw = calculate(this.state.deck, this.state.clerics, this.state.rogues, this.state.warriors, this.state.wizards);
+    const partyByDraw = calculate(this.state.deck, this.state.clerics, this.state.rogues, this.state.warriors, this.state.wizards, this.state.paragons);
     var data = partyByDraw.map(row);
     return <div>
       <div className="form">
@@ -101,6 +109,7 @@ export default class Odds extends React.Component {
         <label html-for="rogues"> Rogues: </label><input className="numbox" type="number" id="rogues" name="rogues" min="0" defaultValue="3" onChange={this.handleInputChange} />
         <label html-for="warriors"> Warriors: </label><input className="numbox" type="number" id="warriors" name="warriors" min="0" defaultValue="2" onChange={this.handleInputChange} />
         <label html-for="wizards"> Wizards: </label><input className="numbox" type="number" id="wizards" name="wizards" min="0" defaultValue="1" onChange={this.handleInputChange} />
+        <label html-for="paragons"> Paragons: </label><input className="numbox" type="number" id="paragons" name="paragons" min="0" defaultValue="0" onChange={this.handleInputChange} />
       </div>
       <BarChart
               data={data}
