@@ -1,15 +1,17 @@
 import React from 'react';
-import { BarChart } from 'react-d3-components';
+import { StackedBarChart, StackedBarSeries, Bar, RangeLines } from 'reaviz';
 import './Odds.css';
 
 function cell(d, dindex) {
-  return {x: "" + (dindex+1), y: d};
+  return {
+    key: "" + dindex,
+    data: d};
 }
 
 function row(p, index) {
   return {
-    label: "" + index,
-    values: p.map(cell)
+    key: " " + (index + 1),
+    data: p.map(cell)
   };
 }
 
@@ -43,7 +45,7 @@ function calculate(s, a, b, c, d, p, ha, hb, hc, hd, hp) {
   if (s == null || isNaN(s) || s < a+b+c+d+p) {
     s = a+b+c+d+p;
   }
-  let partyByDraw = Array(5).fill(0).map(x => Array(s).fill(0));
+  let partyByDraw = Array(s).fill(0).map(x => Array(5).fill(0));
   let deck = new Array(s);
   deck.fill("Z");
   deck.fill("A", 0, a);
@@ -87,14 +89,10 @@ function calculate(s, a, b, c, d, p, ha, hb, hc, hd, hp) {
           party = 4;
         }
       }
-      partyByDraw[party][i] += 1;
+      partyByDraw[i][party] += 1;
     }
   }
   return partyByDraw.map(row => row.map(count => count / trials * 100));
-}
-
-function tooltip (x, y0, y, total) {
-      return <div className="tooltip">{(Math.round(y*10)/10).toString() + "%"}</div>;
 }
 
 export default class Odds extends React.Component {
@@ -144,14 +142,26 @@ export default class Odds extends React.Component {
         <label html-for="wizards"> Wizards: </label><input className="numbox" type="number" id="wizards" name="wizards" min="0" defaultValue="1" onChange={this.handleInputChange} />
         <label html-for="paragons"> Paragons: </label><input className="numbox" type="number" id="paragons" name="paragons" min="0" defaultValue="0" onChange={this.handleInputChange} />
       </div>
-      <BarChart
+      <StackedBarChart
               data={data}
-              width={1500}
-              height={400}
-              tooltipHtml={tooltip}
-              tooltipOffset={{top: -50, left: 0}}
-              yAxis={{tickFormat: y => {return ""}}}
-              margin={{top: 10, bottom: 50, left: 50, right: 10}}/>
+              series={
+                <StackedBarSeries
+                  bar={
+                    <Bar
+                      key="stacked-normalized-bar"
+                      rx={0}
+                      ry={0}
+                      rounded={false}
+                      padding={0}
+                      gradient={false}
+                      rangeLines={<RangeLines position="top" strokeWidth={3} />}
+                      guide={false}
+                    />
+                  }
+                  colorScheme={["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c"]}
+                />
+              }
+              height={500} />
       <div className="legend">
         <div className="legendEntry">
           <svg width="20" height="20">

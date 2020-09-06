@@ -1,4 +1,15 @@
+body {
+    --color-background:#22272b;
+    --color-on-background:#fff;
+    --color-layer-transparent:rgba(0,5,11,0.9);
+    --color-surface:#2c343a;
+    --color-primary:#67c2e4;
+    --color-on-primary:#fff;
+    --color-on-surface: #fff;
+}
+
 .form {
+  margin-bottom: 10px;
 }
 
 .bot {
