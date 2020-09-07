@@ -11,7 +11,8 @@ function cell(d, dindex) {
 function row(p, index) {
   return {
     key: " " + (index + 1),
-    data: p.map(cell)
+    data: p.map(cell),
+    y: "% Probability"
   };
 }
 
@@ -133,14 +134,14 @@ export default class Odds extends React.Component {
   render() {
     const partyByDraw = calculate(this.state.deck, this.state.clerics, this.state.rogues, this.state.warriors, this.state.wizards, this.state.paragons, this.state.haveclerics, this.state.haverogues, this.state.havewarriors, this.state.havewizards, this.state.haveparagons);
     var data = partyByDraw.map(row);
-    return <div>
+    return <div className="page">
       <div className="form">
         <label html-for="deck"> Cards in deck: </label><input className="numbox" type="number" id="deck" name="deck" min="0" defaultValue="40" onChange={this.handleInputChange} />
         <label html-for="clerics"> Clerics: </label><input className="numbox" type="number" id="clerics" name="clerics" min="0" defaultValue="2" onChange={this.handleInputChange} />
         <label html-for="rogues"> Rogues: </label><input className="numbox" type="number" id="rogues" name="rogues" min="0" defaultValue="3" onChange={this.handleInputChange} />
         <label html-for="warriors"> Warriors: </label><input className="numbox" type="number" id="warriors" name="warriors" min="0" defaultValue="2" onChange={this.handleInputChange} />
         <label html-for="wizards"> Wizards: </label><input className="numbox" type="number" id="wizards" name="wizards" min="0" defaultValue="1" onChange={this.handleInputChange} />
-        <label html-for="paragons"> Paragons: </label><input className="numbox" type="number" id="paragons" name="paragons" min="0" defaultValue="0" onChange={this.handleInputChange} />
+        <label html-for="paragons"> Wilds: </label><input className="numbox" type="number" id="paragons" name="paragons" min="0" defaultValue="0" onChange={this.handleInputChange} />
       </div>
       <StackedBarChart
               data={data}
@@ -189,13 +190,13 @@ export default class Odds extends React.Component {
           </svg> = Party of 4
         </div>
       </div>
-      <div className="form bot">
+      <div className="form bot page">
         Already Have --
         <label html-for="haveclerics"> Clerics:</label><input className="checkbox" type="checkbox" id="haveclerics" name="haveclerics" onClick={this.handleClick} />
         <label html-for="haverogues"> Rogues:</label><input className="checkbox" type="checkbox" id="haverogues" name="haverogues" onClick={this.handleClick} />
         <label html-for="havewarriors"> Warriors:</label><input className="checkbox" type="checkbox" id="havewarriors" name="havewarriors" onClick={this.handleClick} />
         <label html-for="havewizards"> Wizards:</label><input className="checkbox" type="checkbox" id="havewizards" name="havewizards" onClick={this.handleClick} />
-        <label html-for="haveparagons"> Paragons: </label><input className="numbox" type="number" id="haveparagons" name="haveparagons" min="0" defaultValue="0" onChange={this.handleInputChange} />
+        <label html-for="haveparagons"> Wilds: </label><input className="numbox" type="number" id="haveparagons" name="haveparagons" min="0" defaultValue="0" onChange={this.handleInputChange} />
       </div>
     </div>;
   }

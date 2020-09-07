@@ -8,6 +8,10 @@ body {
     --color-on-surface: #fff;
 }
 
+.page {
+  width: 90%;
+}
+
 .form {
   margin-bottom: 10px;
 }
@@ -15,7 +19,6 @@ body {
 .bot {
   bottom: 5px;
   position: fixed;
-  width: 100%;
 }
 
 .legend {
