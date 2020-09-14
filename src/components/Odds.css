@@ -12,8 +12,13 @@ body {
   width: 90%;
 }
 
+.explanation {
+  font-size: calc(7.5px + 1.5vmin);
+}
+
 .form {
   margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 .bot {

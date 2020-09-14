@@ -1,0 +1,43 @@
+Deck
+3 Desert of the Glorified (AKR) 288
+1 Abrade (AKR) 136
+0 River Hoopoe (AKR) 256
+0 Cast Out (AKR) 9
+2 Puncturing Blow (AKR) 171
+1 Gust Walker (AKR) 102
+1 Relic Runner (AKR) 103
+3 Steward of Solidarity (AKR) 178
+1 Kor Spiritdancer (AKR) 109
+2 Horror of the Broken Lands (AKR) 108
+1 Wasteland Scorpion (AKR) 135
+2 Cartouche of Ambition (AKR) 97
+2 Desert Cerodon (AKR) 151
+1 Doomed Dissenter (AKR) 101
+1 Marauding Boneslasher (AKR) 115
+1 Baleful Ammit (AKR) 92
+1 Deem Worthy (AKR) 150
+1 Ifnir Deadlands (AKR) 302
+1 Miasmic Mummy (AKR) 116
+1 Tajuru Paragon (AKR) 169
+1 Soulmender (AKR) 169
+1 Dune Beetle (AKR) 104
+5 Swamp (ANB) 116
+7 Mountain (ANB) 114
+
+Sideboard
+1 River Hoopoe (AKR) 256
+1 Cast Out (AKR) 9
+1 Khenra Eternal (AKR) 109
+1 Supernatural Stamina (AKR) 126
+1 Unburden (AKR) 131
+1 Cartouche of Zeal (AKR) 145
+1 Lethal Sting (AKR) 110
+1 Strategic Planning (AKR) 81
+1 Ancient Crab (AKR) 48
+1 Supply Caravan (AKR) 39
+1 Desert of the Mindful (AKR) 290
+1 Floodwaters (AKR) 62
+1 Feral Prowler (AKR) 191
+1 Aerial Guide (AKR) 47
+
+  

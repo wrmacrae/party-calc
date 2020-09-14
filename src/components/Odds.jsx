@@ -96,6 +96,18 @@ function calculate(s, a, b, c, d, p, ha, hb, hc, hd, hp) {
   return partyByDraw.map(row => row.map(count => count / trials * 100));
 }
 
+const clerics = require('../clerics.json');
+const rogues = require('../rogues.json');
+const warriors = require('../warriors.json');
+const wizards = require('../wizards.json');
+const wilds = require('../wilds.json');
+const cardToClass = {}
+clerics.map(card => cardToClass[card] = "clerics")
+rogues.map(card => cardToClass[card] = "rogues")
+warriors.map(card => cardToClass[card] = "warriors")
+wizards.map(card => cardToClass[card] = "wizards")
+wilds.map(card => cardToClass[card] = "wilds")
+
 export default class Odds extends React.Component {
   constructor(props) {
     super(props);
@@ -108,7 +120,6 @@ export default class Odds extends React.Component {
       paragons: 0,
       haveparagons: 0
     };
-
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
@@ -126,22 +137,60 @@ export default class Odds extends React.Component {
     const target = event.target;
     const value = target.value;
     const name = target.name;
-    this.setState({
-      [name]: parseInt(value)
-    });
+    if (name === "upload") {
+      this.processUpload(value);
+    } else {
+      this.setState({
+        [name]: parseInt(value)
+      });
+    }
+  }
+
+  processUpload(upload) {
+    var deck = upload.split("\n");
+    const sideboardIndex = deck.indexOf("Sideboard");
+    if (sideboardIndex !== -1) {
+      deck = deck.slice(0, sideboardIndex);
+    }
+    var counts = {
+      deck: 0,
+      clerics: 0,
+      rogues: 0,
+      warriors: 0,
+      wizards: 0,
+      wilds: 0
+    };
+    deck.reduce(((counts, line) => {
+      if (line !== "" && line.charAt(0) >= '0' && line.charAt(0) <= '9' ) {
+        const withoutSetInfo = line.split("(")[0];
+        const number = parseInt(withoutSetInfo.split()[0]);
+        const name = withoutSetInfo.substring(withoutSetInfo.indexOf(" ") + 1).trim();
+        if (cardToClass.[name] !== undefined) {
+          console.log(cardToClass.[name]);  
+          counts.[cardToClass.[name]] += number;
+        }
+        counts.deck += number;
+      }
+      return counts;
+    }), counts);
+    console.log(counts);
+    this.setState(counts);
   }
 
   render() {
     const partyByDraw = calculate(this.state.deck, this.state.clerics, this.state.rogues, this.state.warriors, this.state.wizards, this.state.paragons, this.state.haveclerics, this.state.haverogues, this.state.havewarriors, this.state.havewizards, this.state.haveparagons);
     var data = partyByDraw.map(row);
     return <div className="page">
+      <div className="explanation">
+      <p>This chart shows the probability of seeing enough classes for each size of party.<br/>The number of cards seen is the X axis of the chart, and the Y axis is percent probabilities. Each color represents a different sized party.<br/>You can change the numbers in the boxes above the chart or paste your deck below the chart.<br/>You can set options along the bottom to represent already having a class or wild.<br/>Note: seen cards aren't always on the battlefield, so your party may be smaller!</p>
+      </div>
       <div className="form">
-        <label html-for="deck"> Cards in deck: </label><input className="numbox" type="number" id="deck" name="deck" min="0" defaultValue="40" onChange={this.handleInputChange} />
-        <label html-for="clerics"> Clerics: </label><input className="numbox" type="number" id="clerics" name="clerics" min="0" defaultValue="2" onChange={this.handleInputChange} />
-        <label html-for="rogues"> Rogues: </label><input className="numbox" type="number" id="rogues" name="rogues" min="0" defaultValue="3" onChange={this.handleInputChange} />
-        <label html-for="warriors"> Warriors: </label><input className="numbox" type="number" id="warriors" name="warriors" min="0" defaultValue="2" onChange={this.handleInputChange} />
-        <label html-for="wizards"> Wizards: </label><input className="numbox" type="number" id="wizards" name="wizards" min="0" defaultValue="1" onChange={this.handleInputChange} />
-        <label html-for="paragons"> Wilds: </label><input className="numbox" type="number" id="paragons" name="paragons" min="0" defaultValue="0" onChange={this.handleInputChange} />
+        <label html-for="deck"> Cards in deck: </label><input className="numbox" type="number" id="deck" name="deck" min="0" defaultValue="40" onChange={this.handleInputChange} value={this.state.deck} />
+        <label html-for="clerics"> Clerics: </label><input className="numbox" type="number" id="clerics" name="clerics" min="0" defaultValue="2" onChange={this.handleInputChange} value={this.state.clerics} />
+        <label html-for="rogues"> Rogues: </label><input className="numbox" type="number" id="rogues" name="rogues" min="0" defaultValue="3" onChange={this.handleInputChange} value={this.state.rogues} />
+        <label html-for="warriors"> Warriors: </label><input className="numbox" type="number" id="warriors" name="warriors" min="0" defaultValue="2" onChange={this.handleInputChange} value={this.state.warriors} />
+        <label html-for="wizards"> Wizards: </label><input className="numbox" type="number" id="wizards" name="wizards" min="0" defaultValue="1" onChange={this.handleInputChange} value={this.state.wizards} />
+        <label html-for="paragons"> Wilds: </label><input className="numbox" type="number" id="paragons" name="paragons" min="0" defaultValue="0" onChange={this.handleInputChange} value={this.state.wilds} />
       </div>
       <StackedBarChart
               data={data}
@@ -162,7 +211,7 @@ export default class Odds extends React.Component {
                   colorScheme={["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c"]}
                 />
               }
-              height={500} />
+              height={450} />
       <div className="legend">
         <div className="legendEntry">
           <svg width="20" height="20">
@@ -190,8 +239,11 @@ export default class Odds extends React.Component {
           </svg> = Party of 4
         </div>
       </div>
-      <div className="form bot page">
-        Already Have --
+      <div className="form">
+        <label html-for="upload"> Paste deck: </label><textarea className="upload" type="string" id="upload" name="upload" onChange={this.handleInputChange} />
+      </div>
+      <div className="form page">
+        Already Have -
         <label html-for="haveclerics"> Clerics:</label><input className="checkbox" type="checkbox" id="haveclerics" name="haveclerics" onClick={this.handleClick} />
         <label html-for="haverogues"> Rogues:</label><input className="checkbox" type="checkbox" id="haverogues" name="haverogues" onClick={this.handleClick} />
         <label html-for="havewarriors"> Warriors:</label><input className="checkbox" type="checkbox" id="havewarriors" name="havewarriors" onClick={this.handleClick} />
