@@ -148,7 +148,10 @@ export default class Odds extends React.Component {
 
   processUpload(upload) {
     var deck = upload.split("\n");
-    const sideboardIndex = deck.indexOf("Sideboard");
+    var sideboardIndex = deck.indexOf("Sideboard");
+    if (sideboardIndex === -1) {
+      sideboardIndex = deck.indexOf("");
+    }
     if (sideboardIndex !== -1) {
       deck = deck.slice(0, sideboardIndex);
     }
